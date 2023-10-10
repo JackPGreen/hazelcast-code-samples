@@ -397,6 +397,12 @@ public final class AllTest {
             IMap map = hazelcast.getMap("myMap");
             map.removeAsync(random.nextInt(SIZE));
         }, 10);
+        addOperation(operations, new Runnable() {
+            public void run() {
+                IMap map = hazelcast.getMap("myMap");
+                map.deleteAsync(random.nextInt(SIZE));
+            }
+        }, 10);
         addOperation(operations, () -> {
             IMap map = hazelcast.getMap("myMap");
             map.remove(random.nextInt(SIZE), new Customer(random.nextInt(100), String.valueOf(random.nextInt(10000))));
