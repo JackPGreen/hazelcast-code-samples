@@ -52,12 +52,6 @@ public final class LongRunningTest {
     private int nextActionMin = 90;
     private int nextActionMax = 180;
 
-    static {
-        System.setProperty("hazelcast.phone.home.enabled", "false");
-        System.setProperty("hazelcast.socket.bind.any", "false");
-        System.setProperty("hazelcast.partition.migration.interval", "0");
-    }
-
     private LongRunningTest(String[] input) {
         if (input != null && input.length > 0) {
             for (String arg : input) {
@@ -194,7 +188,9 @@ public final class LongRunningTest {
             this.valueSize = valueSize;
             this.nodeId = nodeId;
             es = Executors.newFixedThreadPool(threadCount);
-            Config cfg = new XmlConfigBuilder().build();
+            Config cfg = new XmlConfigBuilder().build().setProperty(GroupProperty.PHONE_HOME_ENABLED.getName(), "false")
+                    .setProperty(GroupProperty.SOCKET_BIND_ANY.getName(), "false")
+                    .setProperty(GroupProperty.PARTITION_MIGRATION_INTERVAL.getName(), "0");
             hazelcast = Hazelcast.newHazelcastInstance(cfg);
             esStats = Executors.newSingleThreadExecutor();
             createTime = System.currentTimeMillis();
